@@ -1,0 +1,126 @@
+swagger: "2.0"
+info:
+  title: Glowsun ENT-backend
+  description: Documentation for the Glowsun ENT-Backend.
+  contact:
+    email: himanshurawat@thelattice.in
+  servers:
+    -url: "http://localhost:3000/"
+    description: Local server
+
+schemes: [http,https]
+
+paths:
+#get brand details as per skuType  
+  /brand/{skuType}:
+    get:
+      summary: fetches brand ID with brand name
+      description: fetches the brand ID with brand name according to the skuType which is given as input string. Output will be an array of objects.
+      produces:
+        - application/json
+      parameters:
+      - name: skuType
+        in: path
+        required: true
+        schema:
+          type: string
+        enum: ["battery", "solarPanel", "gridTiedInverter", "HybridInverter"]
+      responses:
+        200:
+          description: A successfull Response.
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                brand_id:
+                  type: integer
+                brand_name:
+                  type: string
+          
+        500: 
+          description: Internal server error
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+        502: 
+          description: Error in database connection
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+        400:
+          description: Error
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+        404:
+          description: Bad request
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+
+#get capacity of inverter as per brandID and skuTYPE
+  /capacity/{skuType}/{brandID}:
+    get:
+      summary: fetches inverter capacity
+      description: fetches the inverter capacity according to the skuType which is given as input string and brand ID which is given as input integer.
+      produces:
+        - application/json
+      parameters:
+      - name: skuType
+        in: path
+        required: true
+        schema:
+          type: string
+        enum: ["gridTiedInverter", "HybridInverter"]
+      - name: brandID
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        200:
+          description: A successfull Response.
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                property_name:
+                  type: integer
+        500: 
+          description: Internal server error
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+        502: 
+          description: Error in database connection
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+        400:
+          description: Error
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+        404:
+          description: Bad request
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
